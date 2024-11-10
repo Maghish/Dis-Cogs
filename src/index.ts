@@ -59,7 +59,6 @@ try {
   if (eventCog && eventCog instanceof EventCog) {
     eventCog.events.forEach((event) => {
       if (event.once) {
-        console.log(event);
         client.once(event.name as keyof ClientEvents, (...args: any[]) =>
           event.execute(...args)
         );

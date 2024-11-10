@@ -15,7 +15,6 @@ cog.addEvent({
   name: Events.ClientReady,
   once: true,
   async execute(...args: any) {
-    console.log(args);
     log(`Logged in as ${args[0].user.tag}!`, "READY");
   },
 } as EventFunction);
