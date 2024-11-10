@@ -33,26 +33,6 @@ export interface Message extends Discord.Message {
   client: Client;
 }
 
-export declare class Cog {
-  name: string;
-  legacyCommands: LegacyCommand[];
-  slashCommands: SlashCommand[];
-
-  constructor(name: string) {
-    this.name = name;
-    this.legacyCommands = [];
-    this.slashCommands = [];
-  }
-
-  addLegacy(command: LegacyCommand) {
-    this.legacyCommands.push(command);
-  }
-
-  addSlash(command: SlashCommand) {
-    this.slashCommands.push(command);
-  }
-}
-
 export interface SlashCommand {
   name: string;
   data: Discord.SlashCommandBuilder;
@@ -68,22 +48,8 @@ export interface LegacyCommand {
   execute(message: Discord.Message, args: string[]): any | Promise<any>;
 }
 
-export declare class EventCog {
-  name: string;
-  events: EventFunction[];
-
-  constructor(name: string) {
-    this.name = name;
-    this.events = [];
-  }
-
-  addEvent(event: EventFunction) {
-    this.events.push(event);
-  }
-}
-
 export interface EventFunction {
-  name: any;
+  name: Discord.Events;
   once: boolean;
   execute(...args: any): any | Promise<any>;
 }

@@ -1,9 +1,15 @@
-import { Client, GatewayIntentBits, Collection } from "discord.js";
+import {
+  Client,
+  GatewayIntentBits,
+  Collection,
+  ClientEvents,
+} from "discord.js";
 import dotenv from "dotenv";
 import path from "path";
 import fs from "fs";
 import * as TYPES from "./types";
 import log from "./util/log";
+import { Cog, EventCog } from "./cogs";
 
 dotenv.config();
 
@@ -32,8 +38,7 @@ const cogFiles = fs.readdirSync(cogsBasePath, "utf-8");
 for (const cogFile of cogFiles) {
   const cogPath = path.join(cogsBasePath, cogFile);
   const cog = require(cogPath).default;
-
-  if (cog && cog instanceof TYPES.Cog) {
+  if (cog && cog instanceof Cog) {
     cog.legacyCommands.forEach((command) =>
       client.commands.set(command.name, command)
     );
@@ -67,21 +72,28 @@ for (const cogFile of cogFiles) {
 
 log(`Loaded ${client.commands.size} legacy commands`, "LOAD");
 
-const eventsPath = path.join(__dirname, "events.ts");
+const eventsPath = path.join(__dirname, "events.js");
 try {
-  const eventCog = require(eventsPath);
+  const eventCog = require(eventsPath).default;
+  console.log(eventCog);
 
-  if (eventCog && eventCog instanceof TYPES.EventCog) {
+  if (eventCog && eventCog instanceof EventCog) {
     eventCog.events.forEach((event) => {
       if (event.once) {
-        client.once(event.name, (...args: any[]) => event.execute(...args));
+        console.log(event);
+        client.once(event.name as keyof ClientEvents, (...args: any[]) =>
+          event.execute(...args)
+        );
       } else {
-        client.on(event.name, (...args: any[]) => event.execute(...args));
+        client.on(event.name as keyof ClientEvents, (...args: any[]) =>
+          event.execute(...args)
+        );
       }
     });
   }
 } catch (error) {
   console.log("Could not find events.ts file!");
+  console.log(error);
 }
 
 // for (const eventFile of eventFiles) {
