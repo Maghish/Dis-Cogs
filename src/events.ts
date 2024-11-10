@@ -8,9 +8,7 @@ const cog = new EventCog();
 const DEFAULT_PREFIX = "!";
 const PREFIX = process.env.PREFIX || DEFAULT_PREFIX;
 
-/**
- * OnReady Event Function
- */
+/** OnReady Event Function **/
 cog.addEvent({
   name: Events.ClientReady,
   once: true,
@@ -19,9 +17,7 @@ cog.addEvent({
   },
 } as EventFunction);
 
-/**
- * MessageCreate Event Function
- */
+/** MessageCreate Event Function **/
 cog.addEvent({
   name: Events.MessageCreate,
   once: false,
