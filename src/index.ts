@@ -15,8 +15,6 @@ dotenv.config();
 
 const token = process.env.TOKEN;
 
-// require("./deploy");
-
 // @ts-ignore
 const client: TYPES.Client = new Client({
   intents: [
@@ -70,7 +68,7 @@ try {
     });
   }
 } catch (error) {
-  console.log("Could not find events.ts file!");
+  log("Could not find events.ts file!", "ERROR");
 }
 
 try {
