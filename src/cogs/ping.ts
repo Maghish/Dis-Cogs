@@ -1,20 +1,20 @@
 import { Cog } from "../cogs";
 import { LegacyCommand } from "../types";
 
-const cog = new Cog("example");
+const cog = new Cog("basic");
 
 cog.addLegacy({
   name: "ping",
-  execute(message, args) {
-    message.reply("Pong!");
+  execute(message) {
+    message.reply(`Pong! ${message.client.ws.ping}ms`);
   },
 } as LegacyCommand);
 
 cog.addLegacy({
   name: "pong",
-  execute(message, args) {
-    message.reply("Ping!");
+  execute(message) {
+    message.reply(`Ping! ${message.client.ws.ping}ms`);
   },
-});
+} as LegacyCommand);
 
 export default cog;
