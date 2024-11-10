@@ -50,32 +50,11 @@ for (const cogFile of cogFiles) {
   continue;
 }
 
-// const commandSubFolders = fs.readdirSync(commandTypeFolderPath, "utf-8");
-// for (const commandSubFolderName of commandSubFolders) {
-//   const commandSubFolderPath = path.join(
-//     ,
-//     commandSubFolderName
-//   );
-//   const commandFiles = fs
-//     .readdirSync(commandSubFolderPath, "utf-8")
-//     .filter((file) => file.endsWith(".js"));
-
-//   for (const commandFileName of commandFiles) {
-//     const command = require(path.join(
-//       commandSubFolderPath,
-//       commandFileName
-//     )).default;
-
-//     continue;
-//   }
-// }
-
 log(`Loaded ${client.commands.size} legacy commands`, "LOAD");
 
 const eventsPath = path.join(__dirname, "events.js");
 try {
   const eventCog = require(eventsPath).default;
-  console.log(eventCog);
 
   if (eventCog && eventCog instanceof EventCog) {
     eventCog.events.forEach((event) => {
@@ -93,20 +72,7 @@ try {
   }
 } catch (error) {
   console.log("Could not find events.ts file!");
-  console.log(error);
 }
-
-// for (const eventFile of eventFiles) {
-//   const eventFilePath = path.join(eventsPath, eventFile);
-
-//   const event = require(eventFilePath).default;
-
-//   if (event.once) {
-//     client.once(event.name, (...args) => event.execute(...args));
-//   } else {
-//     client.on(event.name, (...args) => event.execute(...args));
-//   }
-// }
 
 try {
   client.login(token).catch(() => {
