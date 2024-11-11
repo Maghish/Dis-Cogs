@@ -11,13 +11,6 @@ cog.addLegacy({
   },
 } as LegacyCommand);
 
-cog.addLegacy({
-  name: "pong",
-  execute(message) {
-    message.reply(`Ping! ${message.client.ws.ping}ms`);
-  },
-} as LegacyCommand);
-
 cog.addSlash({
   name: "ping",
   data: new SlashCommandBuilder()
