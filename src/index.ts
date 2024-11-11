@@ -13,6 +13,8 @@ import { Cog, EventCog } from "./cogs";
 
 dotenv.config();
 
+require("./deploy");
+
 const token = process.env.TOKEN;
 
 // @ts-ignore

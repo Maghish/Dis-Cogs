@@ -53,4 +53,35 @@ cog.addEvent({
   },
 } as EventFunction);
 
+/** InteractionCreate Event Function **/
+cog.addEvent({
+  name: Events.InteractionCreate,
+  once: false,
+  async execute(interaction) {
+    if (!interaction.isChatInputCommand()) return;
+
+    const command = interaction.client.slashCommands.get(
+      interaction.commandName
+    );
+
+    try {
+      await command.execute(interaction);
+    } catch (error) {
+      if (interaction.replied || interaction.deferred) {
+        await interaction.followUp({
+          content:
+            "Unexpected error occurred while executing the command, please try again later",
+          ephemeral: true,
+        });
+      } else {
+        await interaction.reply({
+          content:
+            "Unexpected error occurred while executing the command, please try again later",
+          ephemeral: true,
+        });
+      }
+    }
+  },
+});
+
 export default cog;
