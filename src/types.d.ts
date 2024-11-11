@@ -15,7 +15,7 @@ export interface SlashCommand {
   data: Discord.SlashCommandBuilder;
   ownerOnly?: boolean;
   execute(
-    interaction: Discord.CommandInteraction & { client: Client }
+    interaction: Discord.CommandInteraction & { client: Client },
   ): any | Promise<any>;
 }
 export interface LegacyCommand {
