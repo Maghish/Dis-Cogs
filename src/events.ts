@@ -35,14 +35,14 @@ cog.addEvent({
     let command = message.client.commands.get(commandName);
     if (!command) {
       return message.channel.send(
-        `No such command! Please use \`${PREFIX}help\` to list all available commands.`
+        `No such command! Please use \`${PREFIX}help\` to list all available commands.`,
       );
     }
 
     if (!command.execute) {
       log(
         `Command exists but no execute function found for "${commandName}"`,
-        "WARNING"
+        "WARNING",
       );
       return;
     }
@@ -61,7 +61,7 @@ cog.addEvent({
     if (!interaction.isChatInputCommand()) return;
 
     const command = interaction.client.slashCommands.get(
-      interaction.commandName
+      interaction.commandName,
     );
 
     try {

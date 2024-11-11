@@ -40,10 +40,10 @@ for (const cogFile of cogFiles) {
   const cog = require(cogPath).default;
   if (cog && cog instanceof Cog) {
     cog.legacyCommands.forEach((command) =>
-      client.commands.set(command.name, command)
+      client.commands.set(command.name, command),
     );
     cog.slashCommands.forEach((command) =>
-      client.slashCommands.set(command.name, command)
+      client.slashCommands.set(command.name, command),
     );
   }
 
@@ -60,11 +60,11 @@ try {
     eventCog.events.forEach((event) => {
       if (event.once) {
         client.once(event.name as keyof ClientEvents, (...args: any[]) =>
-          event.execute(...args)
+          event.execute(...args),
         );
       } else {
         client.on(event.name as keyof ClientEvents, (...args: any[]) =>
-          event.execute(...args)
+          event.execute(...args),
         );
       }
     });

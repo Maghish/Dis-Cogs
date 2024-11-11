@@ -38,7 +38,7 @@ try {
     } catch (error) {
       log(
         "Unexpected error occurred while registerinig slash commands.",
-        "ERROR"
+        "ERROR",
       );
     }
   })();
