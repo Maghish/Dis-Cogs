@@ -19,7 +19,7 @@ jobs:
         run: npm run lint
 
       - name: Upload ESLint report
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: eslint-report
           path: eslint-report.json
