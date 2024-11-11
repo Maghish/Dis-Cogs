@@ -1,5 +1,14 @@
 # dis-cogs
 
+## 0.1.1
+
+### Patch Changes
+
+- # v0.1.1
+
+  - Updated README.md to display current version
+  - Added ESLint Workflow
+
 ## 0.1.0
 
 ### Minor Changes

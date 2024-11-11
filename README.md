@@ -1,6 +1,6 @@
 # Dis-Cogs
 
-> Current version: **v0.0.1**
+> Current version: **v0.1.1**
 
 Discogs is a discord.js bot template that uses the idea of discord.py's Cogs feature and implements it on discord.js
 
