@@ -18,6 +18,6 @@ Discogs is a discord.js bot template that uses the idea of discord.py's Cogs fea
 
 <center>
 
-_Made with Typescript and Node.js_
+_Special thanks to [@NamVr](https://github.com/NamVr) 🌟_
 
 </center>
