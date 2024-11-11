@@ -4,6 +4,8 @@ module.exports = {
     "no-debugger": "off",
     "no-unused-vars": "off",
     "no-useless-escape": "error",
+    "linebreak-style": ["error", "LF"],
+    indents: ["error", 2],
     quotes: ["error", "double"],
     semi: "off",
   },
