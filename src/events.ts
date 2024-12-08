@@ -35,9 +35,14 @@ cog.addEvent({
 
     let command: LegacyCommand = message.client.commands.get(commandName);
     if (!command) {
-      return message.channel.send(
-        `No such command! Please use \`${PREFIX}help\` to list all available commands.`
-      );
+      message.client.commands.forEach((cmd: LegacyCommand) => {
+        if (cmd.aliases && cmd.aliases.includes(commandName)) {
+          command = cmd;
+        }
+      });
+      if (!command) {
+        return;
+      }
     }
 
     if (!command.execute) {
