@@ -1,6 +1,6 @@
-import { Events } from "discord.js";
+import { Events, GuildMember, PermissionsBitField } from "discord.js";
 import { EventCog } from "./cogs";
-import { EventFunction, Client } from "./types";
+import { EventFunction, LegacyCommand, SlashCommand, Client } from "./types";
 import log from "./util/log";
 import buildEmbed from "./util/embed";
 
@@ -22,7 +22,7 @@ cog.addEvent({
 cog.addEvent({
   name: Events.MessageCreate,
   once: false,
-  async execute(message: any, modifiedClient) {
+  async execute(message: any, modifiedClient: Client) {
     if (message.author.bot) return;
 
     let messageArray = message.content.split(" ");
@@ -33,7 +33,7 @@ cog.addEvent({
 
     const commandName = cmd.split(PREFIX)[1];
 
-    let command = message.client.commands.get(commandName);
+    let command: LegacyCommand = message.client.commands.get(commandName);
     if (!command) {
       return message.channel.send(
         `No such command! Please use \`${PREFIX}help\` to list all available commands.`
@@ -59,8 +59,44 @@ cog.addEvent({
       return message.reply({ embeds: [embed] });
     }
 
-    await command.execute(message, args);
+    if (message.guild && command.selfPermissions.length > 0) {
+      const bot: GuildMember = message.guild.members.cache.get(
+        message.client.user.id
+      );
+      const missingSelfPerms = bot.permissions.missing(command.selfPermissions);
+      if (missingSelfPerms && missingSelfPerms.length > 0) {
+        const embed = buildEmbed(
+          "Permissions Missing ❌",
+          `I don't have the following permissions to execute this command: \`\`\`${missingSelfPerms.join(
+            ", "
+          )}\`\`\``,
+          "Red",
+          message.client
+        );
+        return message.reply({ embeds: [embed] });
+      }
+    }
+    if (message.guild && command.userPermissions?.length > 0) {
+      const user: GuildMember = message.guild.members.cache.get(
+        message.author.id
+      );
+      const missingUserPerms = user.permissions.missing(
+        command.userPermissions
+      );
+      if (missingUserPerms && missingUserPerms.length > 0) {
+        const embed = buildEmbed(
+          "Permissions Missing ❌",
+          `You don't have the following permissions to execute this command: \`\`\`${missingUserPerms.join(
+            ", "
+          )}\`\`\``,
+          "Red",
+          message.client
+        );
+        return message.reply({ embeds: [embed] });
+      }
+    }
 
+    await command.execute(message, args);
     return;
   },
 } as EventFunction);
@@ -72,7 +108,7 @@ cog.addEvent({
   async execute(interaction: any, modifiedClient: Client) {
     if (!interaction.isChatInputCommand()) return;
 
-    const command = interaction.client.slashCommands.get(
+    const command: SlashCommand = interaction.client.slashCommands.get(
       interaction.commandName
     );
 
@@ -84,6 +120,43 @@ cog.addEvent({
         interaction.client
       );
       return interaction.reply({ embeds: [embed] });
+    }
+
+    if (interaction.guild && command.selfPermissions?.length > 0) {
+      const bot: GuildMember = interaction.guild.members.cache.get(
+        interaction.client.user.id
+      );
+      const missingSelfPerms = bot.permissions.missing(command.selfPermissions);
+      if (missingSelfPerms && missingSelfPerms.length > 0) {
+        const embed = buildEmbed(
+          "Permissions Missing ❌",
+          `I don't have the following permissions to execute this command: \`\`\`${missingSelfPerms.join(
+            ", "
+          )}\`\`\``,
+          "Red",
+          interaction.client
+        );
+        return interaction.reply({ embeds: [embed] });
+      }
+    }
+    if (interaction.guild && command.userPermissions?.length > 0) {
+      const user: GuildMember = interaction.guild.members.cache.get(
+        interaction.user.id
+      );
+      const missingUserPerms = user.permissions.missing(
+        command.userPermissions
+      );
+      if (missingUserPerms && missingUserPerms.length > 0) {
+        const embed = buildEmbed(
+          "Permissions Missing ❌",
+          `You don't have the following permissions to execute this command: \`\`\`${missingUserPerms.join(
+            ", "
+          )}\`\`\``,
+          "Red",
+          interaction.client
+        );
+        return interaction.reply({ embeds: [embed] });
+      }
     }
 
     try {

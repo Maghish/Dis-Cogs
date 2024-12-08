@@ -14,6 +14,8 @@ export interface SlashCommand {
   name: string;
   data: Discord.SlashCommandBuilder;
   ownerOnly?: boolean;
+  selfPermissions: Discord.PermissionsBitField.Flags[];
+  userPermissions: Discord.PermissionsBitField.Flags[];
   execute(
     interaction: Discord.CommandInteraction & { client: Client }
   ): any | Promise<any>;
@@ -22,6 +24,8 @@ export interface LegacyCommand {
   name: string;
   aliases?: string[];
   ownerOnly?: boolean;
+  selfPermissions: Discord.PermissionsBitField.Flags[];
+  userPermissions: Discord.PermissionsBitField.Flags[];
   execute(message: Discord.Message, args: string[]): any | Promise<any>;
 }
 
