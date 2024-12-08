@@ -24,6 +24,7 @@ export interface LegacyCommand {
   name: string;
   aliases?: string[];
   ownerOnly?: boolean;
+  dmOnly: "BOTH" | "GUILD_ONLY" | "DM_ONLY";
   selfPermissions: Discord.PermissionsBitField.Flags[];
   userPermissions: Discord.PermissionsBitField.Flags[];
   execute(message: Discord.Message, args: string[]): any | Promise<any>;

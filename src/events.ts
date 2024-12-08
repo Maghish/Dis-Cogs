@@ -53,6 +53,28 @@ cog.addEvent({
       return;
     }
 
+    const isDM = message.channel.isDMBased();
+    const dmOnly = command.dmOnly;
+
+    if (dmOnly === "GUILD_ONLY" && !isDM) {
+      const embed = buildEmbed(
+        "Command not executable!",
+        `This command can only be used in DMs! Please use \`${PREFIX}help\` to list all available commands.`,
+        "Red",
+        message.client
+      );
+      return message.reply({ embeds: [embed] });
+    }
+    if (dmOnly === "DM_ONLY" && isDM) {
+      const embed = buildEmbed(
+        "Command not executable!",
+        `This command can only be used in guilds! Please use \`${PREFIX}help\` to list all available commands.`,
+        "Red",
+        message.client
+      );
+      return message.reply({ embeds: [embed] });
+    }
+
     if (command.ownerOnly && message.author.id !== modifiedClient.owner) {
       const embed = buildEmbed(
         "Command not executable!",

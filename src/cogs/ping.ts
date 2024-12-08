@@ -11,6 +11,7 @@ cog.addLegacy({
     PermissionsBitField.Flags.ViewChannel,
     PermissionsBitField.Flags.SendMessages,
   ],
+  dmOnly: "BOTH",
   execute(message) {
     message.reply(`Pong! ${message.client.ws.ping}ms`);
   },
