@@ -31,7 +31,7 @@ cog.addEvent({
 
     if (!cmd.startsWith(PREFIX)) return;
 
-    const commandName = cmd.split(new RegExp(`^${PREFIX}`))[1];
+    const commandName = cmd.split(PREFIX)[1];
 
     let command = message.client.commands.get(commandName);
     if (!command) {
