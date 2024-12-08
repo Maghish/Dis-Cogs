@@ -3,7 +3,7 @@ import * as Discord from "discord.js";
 export interface Client extends Discord.Client {
   commands: Discord.Collection<string, LegacyCommand>;
   slashCommands: Discord.Collection<string, SlashCommand>;
-  owners: string[];
+  owner: string;
 }
 
 export interface Message extends Discord.Message {
@@ -15,7 +15,7 @@ export interface SlashCommand {
   data: Discord.SlashCommandBuilder;
   ownerOnly?: boolean;
   execute(
-    interaction: Discord.CommandInteraction & { client: Client },
+    interaction: Discord.CommandInteraction & { client: Client }
   ): any | Promise<any>;
 }
 export interface LegacyCommand {

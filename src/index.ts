@@ -30,7 +30,8 @@ const client: TYPES.Client = new Client({
 client.commands = new Collection();
 client.slashCommands = new Collection();
 
-client.owners = [];
+// Set the bot owner
+client.owner = process.env.OWNERID!;
 
 const cogsBasePath = path.join(__dirname, "cogs");
 const cogFiles = fs.readdirSync(cogsBasePath, "utf-8");
@@ -40,10 +41,10 @@ for (const cogFile of cogFiles) {
   const cog = require(cogPath).default;
   if (cog && cog instanceof Cog) {
     cog.legacyCommands.forEach((command) =>
-      client.commands.set(command.name, command),
+      client.commands.set(command.name, command)
     );
     cog.slashCommands.forEach((command) =>
-      client.slashCommands.set(command.name, command),
+      client.slashCommands.set(command.name, command)
     );
   }
 
@@ -60,11 +61,11 @@ try {
     eventCog.events.forEach((event) => {
       if (event.once) {
         client.once(event.name as keyof ClientEvents, (...args: any[]) =>
-          event.execute(...args),
+          event.execute(...args, client)
         );
       } else {
         client.on(event.name as keyof ClientEvents, (...args: any[]) =>
-          event.execute(...args),
+          event.execute(...args, client)
         );
       }
     });

@@ -1,7 +1,8 @@
 import { Events } from "discord.js";
 import { EventCog } from "./cogs";
-import { EventFunction } from "./types";
+import { EventFunction, Client } from "./types";
 import log from "./util/log";
+import buildEmbed from "./util/embed";
 
 const cog = new EventCog();
 
@@ -21,7 +22,7 @@ cog.addEvent({
 cog.addEvent({
   name: Events.MessageCreate,
   once: false,
-  async execute(message: any) {
+  async execute(message: any, modifiedClient) {
     if (message.author.bot) return;
 
     let messageArray = message.content.split(" ");
@@ -35,19 +36,30 @@ cog.addEvent({
     let command = message.client.commands.get(commandName);
     if (!command) {
       return message.channel.send(
-        `No such command! Please use \`${PREFIX}help\` to list all available commands.`,
+        `No such command! Please use \`${PREFIX}help\` to list all available commands.`
       );
     }
 
     if (!command.execute) {
       log(
         `Command exists but no execute function found for "${commandName}"`,
-        "WARNING",
+        "WARNING"
       );
       return;
     }
 
-    command.execute(message, args);
+    if (command.ownerOnly && message.author.id !== modifiedClient.owner) {
+      const embed = buildEmbed(
+        "Command not executable!",
+        "You don't have the permissions to execute this command! This command is exclusive for the bot owners only.",
+        "Red",
+        message.client
+      );
+
+      return message.reply({ embeds: [embed] });
+    }
+
+    await command.execute(message, args);
 
     return;
   },
@@ -57,12 +69,22 @@ cog.addEvent({
 cog.addEvent({
   name: Events.InteractionCreate,
   once: false,
-  async execute(interaction) {
+  async execute(interaction: any, modifiedClient: Client) {
     if (!interaction.isChatInputCommand()) return;
 
     const command = interaction.client.slashCommands.get(
-      interaction.commandName,
+      interaction.commandName
     );
+
+    if (command.ownerOnly && interaction.user.id !== modifiedClient.owner) {
+      const embed = buildEmbed(
+        "Command not executable!",
+        "You don't have the permissions to execute this command! This command is exclusive for the bot owners only.",
+        "Red",
+        interaction.client
+      );
+      return interaction.reply({ embeds: [embed] });
+    }
 
     try {
       await command.execute(interaction);
