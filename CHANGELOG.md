@@ -1,5 +1,24 @@
 # dis-cogs
 
+## 0.2.0
+
+### Minor Changes
+
+- ## Feature Updates
+
+  - Implemented Dm-Resolvable for Legacy Command (issue #13)
+  - Implemented aliases handler for Legacy Command (issue #15)
+  - Created owner-only handler for Legacy and Slash Command (issue #16)
+  - Created embed template builder (issue #11)
+
+  ## Bug Fixes
+
+  - Removed useless regex on `messageCreate` event on event cog (issue #8)
+
+  ## Repo Updates
+
+  - Updated `README.md` to display current version
+
 ## 0.1.1
 
 ### Patch Changes
