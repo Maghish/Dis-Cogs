@@ -28,20 +28,20 @@ try {
   const rest = new REST().setToken(token!);
   (async () => {
     try {
-      log(`Loaded ${commands.length} slash commands`, "LOAD");
+      // log(`Loaded ${commands.length} slash commands`, "LOAD");
 
       const data: any = await rest.put(Routes.applicationCommands(clientID!), {
         body: commands,
       });
 
-      log(`Reloaded ${data.length} slash commands`, "LOAD");
+      // log(`Reloaded ${data.length} slash commands`, "LOAD");
     } catch (error) {
-      log(
-        "Unexpected error occurred while registerinig slash commands.",
-        "ERROR",
-      );
+      // log(
+      //  "Unexpected error occurred while registerinig slash commands.",
+      //  "ERROR",
+      // );
     }
   })();
 } catch (error) {
-  log("Invalid token was provided!", "ERROR");
+  // log("Invalid token was provided!", "ERROR");
 }

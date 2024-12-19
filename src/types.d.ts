@@ -1,9 +1,11 @@
 import * as Discord from "discord.js";
+import { Cog } from "./cogs";
 
 export interface Client extends Discord.Client {
   commands: Discord.Collection<string, LegacyCommand>;
   slashCommands: Discord.Collection<string, SlashCommand>;
   owner: string;
+  cogs: Discord.Collection<string, Cog>;
 }
 
 export interface Message extends Discord.Message {

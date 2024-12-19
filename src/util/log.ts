@@ -1,7 +1,16 @@
-export default function log(content: string, type: string) {
+import blessed from "blessed";
+
+export default function log(
+  content: string,
+  logTab: blessed.Widgets.BoxElement
+) {
   try {
-    console.log(`[${type}] ${content}`);
+    logTab.setContent(
+      logTab.getContent() + `\n[${new Date().toLocaleTimeString()}] ${content}`
+    );
   } catch (error) {
-    console.log(`[ERROR] Error when trying to log a (${type}) message`);
+    logTab.setContent(
+      logTab.getContent() + `[ERROR] Error when trying to log a message\n`
+    );
   }
 }
