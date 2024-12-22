@@ -3,45 +3,70 @@ import fs from "node:fs";
 import path from "path";
 import log from "./util/log";
 import { Cog } from "./cogs";
+import blessed from "blessed";
+import dotenv from "dotenv";
 
-const clientID = process.env.CLIENTID;
-const token = process.env.TOKEN;
+export class Deploy {
+  private clientID: string;
+  private token: string;
+  private commands: any[];
+  private loadingLog: blessed.Widgets.Log | blessed.Widgets.BlessedElement;
+  private errorLog: blessed.Widgets.Log | blessed.Widgets.BlessedElement;
+  private loadedCog:
+    | blessed.Widgets.BoxElement
+    | blessed.Widgets.BlessedElement;
 
-const commands: any = [];
+  constructor(
+    loadingLog: blessed.Widgets.Log | blessed.Widgets.BlessedElement,
+    errorLog: blessed.Widgets.Log | blessed.Widgets.BlessedElement,
+    loadedCog: blessed.Widgets.BoxElement | blessed.Widgets.BlessedElement
+  ) {
+    dotenv.config();
 
-const cogsFolderPath = path.join(__dirname, "cogs");
-const cogFiles = fs
-  .readdirSync(cogsFolderPath)
-  .filter((file) => file.endsWith(".js"));
+    this.loadedCog = loadedCog;
+    this.errorLog = errorLog;
+    this.loadingLog = loadingLog;
 
-for (const file of cogFiles) {
-  const filePath = path.join(cogsFolderPath, file);
-  const cog = require(filePath).default;
-  if (cog && cog instanceof Cog) {
-    cog.slashCommands.forEach((command) => {
-      commands.push(command.data.toJSON());
-    });
-  }
-}
+    this.clientID = process.env.CLIENTID!;
+    this.token = process.env.TOKEN!;
+    this.commands = [];
 
-try {
-  const rest = new REST().setToken(token!);
-  (async () => {
-    try {
-      // log(`Loaded ${commands.length} slash commands`, "LOAD");
+    const cogsFolderPath = path.join(__dirname, "cogs");
+    const cogFiles = fs
+      .readdirSync(cogsFolderPath)
+      .filter((file) => file.endsWith(".js"));
 
-      const data: any = await rest.put(Routes.applicationCommands(clientID!), {
-        body: commands,
-      });
-
-      // log(`Reloaded ${data.length} slash commands`, "LOAD");
-    } catch (error) {
-      // log(
-      //  "Unexpected error occurred while registerinig slash commands.",
-      //  "ERROR",
-      // );
+    for (const file of cogFiles) {
+      const filePath = path.join(cogsFolderPath, file);
+      const cog = require(filePath).default;
+      if (cog && cog instanceof Cog) {
+        cog.slashCommands.forEach((command) => {
+          this.commands.push(command.data.toJSON());
+        });
+      }
     }
-  })();
-} catch (error) {
-  // log("Invalid token was provided!", "ERROR");
+  }
+
+  public async registerCommands() {
+    try {
+      const rest = new REST().setToken(this.token);
+      try {
+        const data: any = await rest.put(
+          Routes.applicationCommands(this.clientID),
+          {
+            body: this.commands,
+          }
+        );
+        log(`Reloaded ${data.length} slash commands`, this.loadingLog);
+      } catch (error: any) {
+        log(
+          "Unexpected error occurred while registering slash commands.\n" +
+            error.message,
+          this.errorLog
+        );
+      }
+    } catch (error) {
+      log("Invalid token was provided!", this.errorLog);
+    }
+  }
 }
