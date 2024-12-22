@@ -2,7 +2,7 @@ import blessed from "blessed";
 
 export default function log(
   content: string,
-  logTab: blessed.Widgets.BoxElement
+  logTab: blessed.Widgets.BlessedElement
 ) {
   try {
     logTab.setContent(
