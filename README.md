@@ -1,6 +1,6 @@
 # Dis-Cogs
 
-> Current version: **v0.2.1-beta**
+> Current version: **v0.2.1-beta.2**
 
 Discogs is a discord.js bot template that uses the idea of discord.py's Cogs feature and implements it on discord.js
 
@@ -14,10 +14,10 @@ Discogs is a discord.js bot template that uses the idea of discord.py's Cogs fea
 - Cogs & Cogs Handler
 - Typescript Support
 - Built-in Permissions Handler, Owner-only command handler, etc
-- Rich Text Interface for better monitoring logs, etc
+- Customizable Text Interface (using [`blessed.js`](https://github.com/chjj/blessed)) for better monitoring logs, etc
 - Extendable
 
-## Installtion
+## Installation
 
 1. Clone this repo into your local machine using
 
