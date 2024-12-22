@@ -33,10 +33,10 @@ screen.key(["escape", "q", "C-c"], function (ch, key) {
   return process.exit(0);
 });
 
-const loadingLog = blessed.box({
-  top: 0,
-  left: 0,
-  width: "50%",
+const loadingLog = blessed.log({
+  top: "50%",
+  left: "20%",
+  width: "40%",
   height: "50%",
   label: "Loading Log",
   content: "",
@@ -47,16 +47,16 @@ const loadingLog = blessed.box({
   style: {
     fg: "green",
     border: {
-      fg: "black",
+      fg: "white",
     },
   },
   scrollable: true,
 });
 
-const errorLog = blessed.box({
-  top: 0,
+const errorLog = blessed.log({
+  top: "50%",
   right: 0,
-  width: "50%",
+  width: "40%",
   height: "50%",
   label: "Error Log",
   content: "",
@@ -67,7 +67,7 @@ const errorLog = blessed.box({
   style: {
     fg: "red",
     border: {
-      fg: "black",
+      fg: "white",
     },
   },
 });
@@ -75,7 +75,7 @@ const errorLog = blessed.box({
 const loadedCog = blessed.box({
   top: "50%",
   left: 0,
-  width: "15%",
+  width: "20%",
   height: "50%",
   label: "Loaded Cogs",
   content: "- Loading...",
@@ -86,15 +86,15 @@ const loadedCog = blessed.box({
   style: {
     fg: "blue",
     border: {
-      fg: "black",
+      fg: "white",
     },
   },
 });
 
 const title = blessed.box({
-  top: "50%",
-  right: 0,
-  width: "35%",
+  top: 0,
+  left: 0,
+  width: "100%",
   height: "50%",
   align: "center",
   valign: "middle",
@@ -110,186 +110,16 @@ const title = blessed.box({
   },
   style: {
     border: {
-      fg: "black",
+      fg: "white",
     },
     fg: "red",
   },
 });
 
-// const activeProcesses = contrib.table({
-//   top: "50%",
-//   left: "20%",
-//   width: "30%",
-//   height: "50%",
-//   keys: true,
-//   fg: "green",
-//   label: "Active Processes",
-//   columnSpacing: 2,
-//   columnWidth: [8, 8, 8, 8],
-//   border: {
-//     type: "line",
-//     fg: "black",
-//   },
-//   vi: true,
-//   alwaysScroll: true,
-//   mouse: true,
-// });
-
-// activeProcesses.focus();
-
-// // Fetch and set table data
-
-// setInterval(() => {
-//   exec("ps -eo pid,comm,%mem,%cpu --sort=-%cpu", (err, stdout, stderr) => {
-//     if (err) {
-//       log(`Error fetching processes: ${stderr}`,   errorLog);
-//       return;
-//     }
-
-//     const lines = stdout.trim().split("\n");
-//     const headers = lines[0].split(/\s+/);
-//     const data = lines.slice(1).map((line) => {
-//       const parts = line.trim().split(/\s+/);
-//       if (parts.length > 4) {
-//         return [
-//           parts[0],
-//           parts[1],
-//           parts.slice(2, -1).join(" "),
-//           parts[parts.length - 1],
-//         ];
-//       }
-//       return parts;
-//     });
-
-//     activeProcesses.setData({
-//       headers: headers,
-//       data: data,
-//     });
-//   });
-// }, 500);
-
-const resourceChart = contrib.line({
-  top: "50%",
-  left: "15%",
-  width: "25%",
-  height: "50%",
-  label: "Memory and CPU Usage",
-  showLegend: true,
-  legend: { width: 10 },
-  border: {
-    type: "line",
-    fg: 0x000000,
-  },
-});
-
-const memUsage: { title: string; x: any[]; y: any[]; style: any } = {
-  title: "MEM",
-  x: [],
-  y: [],
-  style: {
-    line: "yellow",
-  },
-};
-
-const cpuUsage: { title: string; x: any[]; y: any[]; style: any } = {
-  title: "CPU",
-  x: [],
-  y: [],
-  style: {
-    line: "red",
-  },
-};
-
-function updateChartData() {
-  const totalMem = os.totalmem();
-  const freeMem = os.freemem();
-  const usedMem = totalMem - freeMem;
-  const memPercent = (usedMem / totalMem) * 100;
-
-  const cpus = os.cpus();
-  const cpuPercent =
-    cpus.reduce((acc, cpu) => {
-      const total = Object.values(cpu.times).reduce(
-        (acc, time) => acc + time,
-        0
-      );
-      const idle = cpu.times.idle;
-      return acc + (1 - idle / total) * 100;
-    }, 0) / cpus.length;
-
-  const currentTime = new Date().toLocaleTimeString();
-
-  if (memUsage.x.length >= 10) {
-    memUsage.x.shift();
-    memUsage.y.shift();
-    cpuUsage.x.shift();
-    cpuUsage.y.shift();
-  }
-
-  memUsage.x.push(currentTime);
-  memUsage.y.push(memPercent);
-  cpuUsage.x.push(currentTime);
-  cpuUsage.y.push(cpuPercent);
-
-  resourceChart.setData([memUsage, cpuUsage]);
-}
-
-// Create a line chart for Bot Latency
-const latencyChart = contrib.line({
-  top: "50%",
-  left: "40%",
-  width: "25%",
-  height: "50%",
-  label: "Bot Latency",
-  showLegend: true,
-  legend: { width: 10 },
-  border: {
-    type: "line",
-    fg: 0x000000,
-  },
-  style: {
-    line: "blue",
-  },
-});
-
-const botLatency: { title: string; x: any[]; y: any[] } = {
-  title: "Bot",
-  x: [],
-  y: [],
-};
-
-async function updateLatencyChartData() {
-  if (client.ws.ping) {
-    const currentTime = new Date().toLocaleTimeString();
-
-    // Fetch real bot latency
-    const simulatedBotLatency = client.ws.ping;
-
-    if (botLatency.x.length >= 10) {
-      botLatency.x.shift();
-      botLatency.y.shift();
-    }
-
-    botLatency.x.push(currentTime);
-    botLatency.y.push(simulatedBotLatency);
-
-    latencyChart.setData([botLatency]);
-  } else {
-    botLatency.x.push(new Date().toLocaleTimeString());
-    botLatency.y.push(0);
-    latencyChart.setData([botLatency]);
-  }
-}
-
-setInterval(updateChartData, 500);
-setInterval(updateLatencyChartData, 1000);
-
 screen.append(loadingLog);
 screen.append(errorLog);
 screen.append(loadedCog);
 screen.append(title);
-screen.append(resourceChart);
-screen.append(latencyChart);
 
 screen.render();
 

@@ -6,7 +6,7 @@ export default function log(
 ) {
   try {
     logTab.setContent(
-      logTab.getContent() + `\n[${new Date().toLocaleTimeString()}] ${content}`
+      logTab.getContent() + `[${new Date().toLocaleTimeString()}] ${content}\n`
     );
   } catch (error) {
     logTab.setContent(
