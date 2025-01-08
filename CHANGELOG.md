@@ -1,5 +1,30 @@
 # dis-cogs
 
+## 0.2.1-beta.2
+
+### Patch Changes
+
+- ## Feature Updates
+
+  - `index.ts` is now renamed to `bot.ts`
+  - Created new main file called `main.ts` to operate both `deploy.ts` and `bot.ts`
+  - Modified `bot.ts` from execute on run code to export class
+  - Modified `deploy.ts` from execute on run code to export class, just like `bot.ts`
+  - Detached TUI from `bot.ts` and created a new class `TUI` and rendered inside `main.ts`
+  - Configured `log.ts` util function argument `logTab` to type `blessed.Widgets.BlessedElement`
+  - Fixed "installation" spelling on `README.md`
+
+## 0.2.1-beta
+
+### Patch Changes
+
+- ## Feature Updates
+
+  - Built rich TUI with `blessed` and `blessed-contrib`
+  - Modified `log` function and logging methods from now on
+    - Log **TYPE** is now removed and replaced with current time log in H:M:S format
+  - The main file after build, is now on `dist/src` as it was `dist/` before
+
 ## 0.2.0
 
 ### Minor Changes
