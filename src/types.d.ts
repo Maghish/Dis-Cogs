@@ -37,3 +37,13 @@ export interface EventFunction {
   once: boolean;
   execute(...args: any): any | Promise<any>;
 }
+
+export interface ModuleConfigType {
+  path: string;
+  layer: number;
+}
+
+export interface ModuleType {
+  _start(): void;
+  [key: string]: any;
+}

@@ -8,17 +8,12 @@ import {
 import dotenv from "dotenv";
 import path from "path";
 import fs from "fs";
-import * as TYPES from "./types";
+import * as TYPES from "../../types";
 import log from "./util/log";
 import { Cog, EventCog } from "./cogs";
 import blessed from "blessed";
-import contrib from "blessed-contrib";
-import figlet from "figlet";
-import { version } from "../package.json";
-import { exec } from "child_process";
-import os from "os";
 
-export class Bot {
+export default class Bot {
   private client: TYPES.Client;
   private loadingLog: blessed.Widgets.Log | blessed.Widgets.BlessedElement;
   private errorLog: blessed.Widgets.Log | blessed.Widgets.BlessedElement;
@@ -116,7 +111,7 @@ export class Bot {
     }
   }
 
-  public async start() {
+  public async _start() {
     try {
       await this.client.login(process.env.TOKEN);
     } catch (error: any) {

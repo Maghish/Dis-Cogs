@@ -1,6 +1,11 @@
 import { Events, GuildMember, PermissionsBitField } from "discord.js";
 import { EventCog } from "./cogs";
-import { EventFunction, LegacyCommand, SlashCommand, Client } from "./types";
+import {
+  EventFunction,
+  LegacyCommand,
+  SlashCommand,
+  Client,
+} from "../../types";
 import log from "./util/log";
 import buildEmbed from "./util/embed";
 
