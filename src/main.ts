@@ -1,5 +1,6 @@
 import { exit } from "process";
 import { ModuleConfigType, ModuleType } from "./types";
+import { Worker } from "worker_threads";
 
 class Prime {
   public modules: ModuleConfigType[];
@@ -30,46 +31,30 @@ class Prime {
     }
   }
 
-  public async start() {
+  public async run() {
     for (const module of this.moduleCache) {
+      // @ts-ignore
+      const instance = new module();
+      const thread = await this.createThread(instance._start);
+      this.threads.push(thread);
     }
   }
 
   private async createThread(workerFunction: () => any) {
-    // Convert the function to a string
-    const functionCode = workerFunction.toString();
-
-    // Create a Blob with the worker code
-    const blob = new Blob(
-      [
-        `
-            self.onmessage = () => {
-                (${functionCode})();
-                self.postMessage("Task has finished execution");
-            };
-        `,
-      ],
-      { type: "application/javascript" }
-    );
-
-    // Create a URL for the Blob
-    const workerURL = URL.createObjectURL(blob);
-
-    // Create the Web Worker
-    const worker = new Worker(workerURL);
+    const worker = new Worker(workerFunction().toString(), { eval: true });
 
     // Send a start message to the worker
     worker.postMessage("start");
 
     // Handle messages from the worker
-    worker.onmessage = (event) => {
+    worker.addListener("message", (event) => {
       console.log(event.data);
-    };
+    });
 
     // Handle errors
-    worker.onerror = (error) => {
+    worker.addListener("error", (error) => {
       console.error("Error in worker:", error.message);
-    };
+    });
 
     return worker;
   }
@@ -82,11 +67,12 @@ async function main() {
     {
       path: "./modules/discordbot/bot.js",
       layer: 1,
+      port: 3000,
     },
   ];
 
   prime.import();
-  console.log(prime.moduleCache);
+  await prime.run();
 }
 
 main();

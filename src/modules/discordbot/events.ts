@@ -18,17 +18,8 @@ const PREFIX = process.env.PREFIX || DEFAULT_PREFIX;
 cog.addEvent({
   name: Events.ClientReady,
   once: true,
-  async execute(client, modifiedClient: Client, { loadingLog, loadedCog }) {
-    log(`Logged in as ${client.user.tag}!`, loadingLog);
-    let loadedCogs = "";
-    modifiedClient.cogs.forEach((cog) => {
-      loadedCogs += `- ${cog.name} ✅\n`;
-    });
-
-    loadedCog.setContent("");
-    await new Promise((r) => setTimeout(r, 3000));
-    loadedCog.setContent(loadedCogs);
-    loadedCog.setLabel("Loaded Cogs " + `(${modifiedClient.cogs.size})`);
+  async execute(client, modifiedClient: Client) {
+    log(`Logged in as ${client.user.tag}!`, "loadingLog");
   },
 } as EventFunction);
 
@@ -36,11 +27,7 @@ cog.addEvent({
 cog.addEvent({
   name: Events.MessageCreate,
   once: false,
-  async execute(
-    message: any,
-    modifiedClient: Client,
-    { loadingLog, errorLog }
-  ) {
+  async execute(message: any, modifiedClient: Client) {
     if (message.author.bot) return;
 
     let messageArray = message.content.split(" ");
@@ -66,7 +53,7 @@ cog.addEvent({
     if (!command.execute) {
       log(
         `Command exists but no execute function found for "${commandName}"`,
-        errorLog
+        "errorLog"
       );
       return;
     }
