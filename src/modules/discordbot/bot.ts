@@ -13,13 +13,15 @@ import log from "./util/log";
 import { Cog, EventCog } from "./cogs";
 import express from "express";
 
-export default class Bot implements TYPES.ModuleType {
+import { workerData } from "worker_threads";
+
+class Bot {
   private client: TYPES.Client;
   private port: number;
   private app: express.Express;
 
-  constructor(port: number) {
-    this.port = port;
+  constructor() {
+    this.port = workerData.port;
     const app = express();
     this.app = app;
     // @ts-ignore
@@ -110,3 +112,6 @@ export default class Bot implements TYPES.ModuleType {
     }
   }
 }
+
+const bot = new Bot();
+bot._start();

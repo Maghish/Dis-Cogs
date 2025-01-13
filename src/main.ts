@@ -1,47 +1,47 @@
 import { exit } from "process";
-import { ModuleConfigType, ModuleType } from "./types";
+import { ModuleConfigType } from "./types";
 import { Worker } from "worker_threads";
+import path from "path";
 
 class Prime {
   public modules: ModuleConfigType[];
-  public moduleCache: ModuleType[];
   private threads: any[];
 
   constructor() {
     this.modules = [];
-    this.moduleCache = [];
     this.threads = [];
   }
 
-  public import() {
-    if (this.modules && this.modules.length > 0) {
-      this.modules.sort((a, b) => (a!.layer > b!.layer ? 1 : -1));
+  // public import() {
+  //   if (this.modules && this.modules.length > 0) {
+  //     this.modules.sort((a, b) => (a!.layer > b!.layer ? 1 : -1));
 
-      this.modules.forEach((module) => {
-        const moduleClass = require(module.path).default;
-        if (moduleClass.prototype._start) {
-          this.moduleCache.push(moduleClass as ModuleType);
-        } else {
-          console.log("Module does not have a `_start` function! Skipping...");
-        }
-      });
-    } else {
-      console.log("No modules added to the Prime class!");
-      exit(1);
-    }
-  }
+  //     this.modules.forEach((module) => {
+  //       const moduleClass = require(module.path).default;
+  //       if (moduleClass.prototype._start) {
+  //         this.moduleCache.push(moduleClass as ModuleType);
+  //       } else {
+  //         console.log("Module does not have a `_start` function! Skipping...");
+  //       }
+  //     });
+  //   } else {
+  //     console.log("No modules added to the Prime class!");
+  //     exit(1);
+  //   }
+  // }
 
   public async run() {
-    for (const module of this.moduleCache) {
-      // @ts-ignore
-      const instance = new module();
-      const thread = await this.createThread(instance._start);
+    this.modules.forEach(async (modulePath) => {
+      const thread = await this.createThread(modulePath.path, modulePath.port);
+      console.log("Thread created for module:", modulePath.path);
       this.threads.push(thread);
-    }
+    });
   }
 
-  private async createThread(workerFunction: () => any) {
-    const worker = new Worker(workerFunction().toString(), { eval: true });
+  private async createThread(modulePath: string, port: number) {
+    const worker = new Worker(path.resolve(__dirname, modulePath), {
+      workerData: { port: port },
+    });
 
     // Send a start message to the worker
     worker.postMessage("start");
@@ -71,7 +71,6 @@ async function main() {
     },
   ];
 
-  prime.import();
   await prime.run();
 }
 

@@ -43,8 +43,3 @@ export interface ModuleConfigType {
   layer: number;
   port: number;
 }
-
-export interface ModuleType {
-  [key: string]: any;
-  _start(): void;
-}
