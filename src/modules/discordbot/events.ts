@@ -6,7 +6,6 @@ import {
   SlashCommand,
   Client,
 } from "../../types";
-import log from "./util/log";
 import buildEmbed from "./util/embed";
 
 const cog = new EventCog();
@@ -18,8 +17,8 @@ const PREFIX = process.env.PREFIX || DEFAULT_PREFIX;
 cog.addEvent({
   name: Events.ClientReady,
   once: true,
-  async execute(client, modifiedClient: Client) {
-    log(`Logged in as ${client.user.tag}!`, "loadingLog");
+  async execute(client, modifiedClient: Client, logger) {
+    logger.log(`Logged in as ${client.user.tag}!`, "loadingLog");
   },
 } as EventFunction);
 
@@ -27,7 +26,7 @@ cog.addEvent({
 cog.addEvent({
   name: Events.MessageCreate,
   once: false,
-  async execute(message: any, modifiedClient: Client) {
+  async execute(message: any, modifiedClient: Client, logger) {
     if (message.author.bot) return;
 
     let messageArray = message.content.split(" ");
@@ -51,7 +50,7 @@ cog.addEvent({
     }
 
     if (!command.execute) {
-      log(
+      logger.log(
         `Command exists but no execute function found for "${commandName}"`,
         "errorLog"
       );

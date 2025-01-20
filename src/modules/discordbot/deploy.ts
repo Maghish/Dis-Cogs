@@ -57,16 +57,16 @@ export class Deploy {
             body: this.commands,
           }
         );
-        log(`Reloaded ${data.length} slash commands`, this.loadingLog);
+        // log(`Reloaded ${data.length} slash commands`, this.loadingLog);
       } catch (error: any) {
-        log(
-          "Unexpected error occurred while registering slash commands.\n" +
-            error.message,
-          this.errorLog
-        );
+        // log(
+        // "Unexpected error occurred while registering slash commands.\n" +
+        // error.message,
+        // this.errorLog
+        // );
       }
     } catch (error) {
-      log("Invalid token was provided!", this.errorLog);
+      //   log("Invalid token was provided!", this.errorLog);
     }
   }
 }

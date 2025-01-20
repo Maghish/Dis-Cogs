@@ -1,13 +1,26 @@
 import blessed from "blessed";
+import { ModuleConfigType } from "../../../types";
 
-export default function log(content: string, logTab: string) {
-  try {
-    // logTab.setContent(
-    //   logTab.getContent() + `[${new Date().toLocaleTimeString()}] ${content}\n`
-    // );
-  } catch (error) {
-    // logTab.setContent(
-    //   logTab.getContent() + `[ERROR] Error when trying to log a message\n`
-    // );
+export default class Log {
+  private modules: ModuleConfigType[];
+
+  constructor(modules: ModuleConfigType[]) {
+    this.modules = modules;
+  }
+
+  public log(content: string, tab: string) {
+    this.modules.forEach(async (module) => {
+      if (module.name === "tui") {
+        const res = await fetch(`http://localhost:${module.port}/log`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ content, tab }),
+        });
+
+        console.log(res.status);
+      }
+    });
   }
 }

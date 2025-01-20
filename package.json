@@ -2,7 +2,7 @@
   "name": "dis-cogs",
   "version": "0.2.1-beta.2",
   "description": "Discogs is a discord.js bot template that uses the idea of discord.py's Cogs feature and implements it on discord.js",
-  "main": "dist/src/main.js",
+  "main": "dist/main.js",
   "scripts": {
     "dev": "./dev.sh",
     "build": "npx tsc",

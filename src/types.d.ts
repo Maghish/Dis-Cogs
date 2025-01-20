@@ -39,6 +39,7 @@ export interface EventFunction {
 }
 
 export interface ModuleConfigType {
+  name: string;
   path: string;
   layer: number;
   port: number;

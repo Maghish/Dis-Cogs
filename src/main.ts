@@ -2,6 +2,8 @@ import { exit } from "process";
 import { ModuleConfigType } from "./types";
 import { Worker } from "worker_threads";
 import path from "path";
+import blessed from "blessed";
+import { log } from "blessed-contrib";
 
 class Prime {
   public modules: ModuleConfigType[];
@@ -40,7 +42,7 @@ class Prime {
 
   private async createThread(modulePath: string, port: number) {
     const worker = new Worker(path.resolve(__dirname, modulePath), {
-      workerData: { port: port },
+      workerData: { port: port, modules: this.modules },
     });
 
     // Send a start message to the worker
@@ -65,11 +67,37 @@ async function main() {
 
   prime.modules = [
     {
+      name: "mainbot",
       path: "./modules/discordbot/bot.js",
       layer: 1,
       port: 3000,
     },
+    {
+      name: "tui",
+      path: "./modules/tui/main.js",
+      layer: 1,
+      port: 3001,
+    },
   ];
+
+  const screen = blessed.screen();
+
+  screen.key(["escape", "q", "C-c"], () => {
+    process.exit(0);
+  });
+
+  screen.append(
+    log({
+      top: "center",
+      left: "center",
+      width: "50%",
+      height: "50%",
+      border: {
+        type: "line",
+      },
+    })
+  );
+  screen.render();
 
   await prime.run();
 }
