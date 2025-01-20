@@ -43,4 +43,5 @@ export interface ModuleConfigType {
   path: string;
   layer: number;
   port: number;
+  type: "THREAD" | "MAIN";
 }

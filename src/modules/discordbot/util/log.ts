@@ -18,8 +18,6 @@ export default class Log {
           },
           body: JSON.stringify({ content, tab }),
         });
-
-        console.log(res.status);
       }
     });
   }

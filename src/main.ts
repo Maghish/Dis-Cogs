@@ -8,10 +8,13 @@ import { log } from "blessed-contrib";
 class Prime {
   public modules: ModuleConfigType[];
   private threads: any[];
+  public mainModules: any[];
+  public TUI: any;
 
   constructor() {
     this.modules = [];
     this.threads = [];
+    this.mainModules = [];
   }
 
   // public import() {
@@ -32,11 +35,27 @@ class Prime {
   //   }
   // }
 
+  public async importMainModules() {
+    this.modules.forEach(async (module) => {
+      if (module.type === "MAIN") {
+        const moduleClass = require(module.path).default;
+        if (moduleClass.prototype._start) {
+          const inst = new moduleClass(module.port);
+          this.mainModules.push(inst);
+        }
+      }
+    });
+  }
+
   public async run() {
-    this.modules.forEach(async (modulePath) => {
-      const thread = await this.createThread(modulePath.path, modulePath.port);
-      console.log("Thread created for module:", modulePath.path);
-      this.threads.push(thread);
+    this.modules.forEach(async (module) => {
+      if (module.type === "THREAD") {
+        const thread = await this.createThread(module.path, module.port);
+        this.TUI
+          ? this.TUI.appendContent("Thread created for module: " + module.path)
+          : console.log("Thread created for module:", module.path);
+        this.threads.push(thread);
+      }
     });
   }
 
@@ -67,37 +86,46 @@ async function main() {
 
   prime.modules = [
     {
-      name: "mainbot",
-      path: "./modules/discordbot/bot.js",
-      layer: 1,
-      port: 3000,
-    },
-    {
       name: "tui",
       path: "./modules/tui/main.js",
       layer: 1,
       port: 3001,
+      type: "MAIN",
+    },
+    {
+      name: "mainbot",
+      path: "./modules/discordbot/bot.js",
+      layer: 1,
+      port: 3000,
+      type: "THREAD",
     },
   ];
 
-  const screen = blessed.screen();
+  // const screen = blessed.screen();
 
-  screen.key(["escape", "q", "C-c"], () => {
-    process.exit(0);
+  // screen.key(["escape", "q", "C-c"], () => {
+  //   process.exit(0);
+  // });
+
+  // screen.append(
+  //   log({
+  //     top: "center",
+  //     left: "center",
+  //     width: "50%",
+  //     height: "50%",
+  //     border: {
+  //       type: "line",
+  //     },
+  //   })
+  // );
+  // screen.render();
+
+  await prime.importMainModules();
+
+  prime.mainModules.forEach(async (module) => {
+    await module._start();
+    prime.TUI = module;
   });
-
-  screen.append(
-    log({
-      top: "center",
-      left: "center",
-      width: "50%",
-      height: "50%",
-      border: {
-        type: "line",
-      },
-    })
-  );
-  screen.render();
 
   await prime.run();
 }
