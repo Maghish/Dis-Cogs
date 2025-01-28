@@ -37,7 +37,7 @@ class TUI {
     this.loadComponents([
       botCogsBox,
       botErrorLog,
-      botLog,
+      // botLog,
       modulesBox,
       logoBox,
       generalLog,
@@ -73,53 +73,91 @@ class TUI {
 
   setControllers() {
     this.app.post("/botlog", (req, res) => {
-      if (this.components.bot_log.content === "") {
-        this.components.bot_log.setContent(req.body.content);
-      } else {
-        this.components.bot_log.setContent(
-          this.components.bot_log.content + "\n" + req.body.content
-        );
+      try {
+        if (this.components.bot_log.content === "") {
+          this.components.bot_log.setContent(req.body.content);
+        } else {
+          this.components.bot_log.setContent(
+            this.components.bot_log.content + "\n" + req.body.content
+          );
+        }
+        this.screen.render();
+        res.status(200).send();
+      } catch (error) {
+        if (error instanceof TypeError && error.message.includes("undefined")) {
+          this.screen.destroy();
+          console.error("Default components are missing");
+          process.exit(1);
+        } else {
+          throw error;
+        }
       }
-
-      this.screen.render();
-      res.status(200);
     });
 
     this.app.post("/boterror", (req, res) => {
-      if (this.components.bot_error.content === "") {
-        this.components.bot_error.setContent(req.body.content);
-      } else {
-        this.components.bot_error.setContent(
-          this.components.bot_error.content + "\n" + req.body.content
-        );
+      try {
+        if (this.components.bot_error.content === "") {
+          this.components.bot_error.setContent(req.body.content);
+        } else {
+          this.components.bot_error.setContent(
+            this.components.bot_error.content + "\n" + req.body.content
+          );
+        }
+        this.screen.render();
+        res.status(200).send();
+      } catch (error) {
+        if (error instanceof TypeError && error.message.includes("undefined")) {
+          this.screen.destroy();
+          console.error("Default components are missing");
+          process.exit(1);
+        } else {
+          throw error;
+        }
       }
-      this.screen.render();
-      res.status(200);
     });
 
     this.app.post("/setcogs", (req, res) => {
-      if (this.components.bot_cogs.content === "Loading...") {
-        this.components.bot_cogs.setContent(req.body.content);
-      } else {
-        this.components.bot_cogs.setContent(
-          this.components.bot_cogs.content + "\n" + req.body.content
-        );
+      try {
+        if (this.components.bot_cogs.content === "Loading...") {
+          this.components.bot_cogs.setContent(req.body.content);
+        } else {
+          this.components.bot_cogs.setContent(
+            this.components.bot_cogs.content + "\n" + req.body.content
+          );
+        }
+        this.screen.render();
+        res.status(200).send();
+      } catch (error) {
+        if (error instanceof TypeError && error.message.includes("undefined")) {
+          this.screen.destroy();
+          console.error("Default components are missing");
+          process.exit(1);
+        } else {
+          throw error;
+        }
       }
-
-      this.screen.render();
-      res.status(200);
     });
 
     this.app.post("/generallog", (req, res) => {
-      if (this.components.general_log.content === "") {
-        this.components.general_log.setContent(req.body.content);
-      } else {
-        this.components.general_log.setContent(
-          this.components.general_log.content + "\n" + req.body.content
-        );
+      try {
+        if (this.components.general_log.content === "") {
+          this.components.general_log.setContent(req.body.content);
+        } else {
+          this.components.general_log.setContent(
+            this.components.general_log.content + "\n" + req.body.content
+          );
+        }
+        this.screen.render();
+        res.status(200).send();
+      } catch (error) {
+        if (error instanceof TypeError && error.message.includes("undefined")) {
+          this.screen.destroy();
+          console.error("Default components are missing");
+          process.exit(1);
+        } else {
+          throw error;
+        }
       }
-      this.screen.render();
-      res.status(200);
     });
   }
 
@@ -132,25 +170,45 @@ class TUI {
   }
 
   async appendGeneralLog(content: string) {
-    if (this.components.general_log.content === "") {
-      this.components.general_log.setContent(content);
-    } else {
-      this.components.general_log.setContent(
-        this.components.general_log.content + "\n" + content
-      );
+    try {
+      if (this.components.general_log.content === "") {
+        this.components.general_log.setContent(content);
+      } else {
+        this.components.general_log.setContent(
+          this.components.general_log.content + "\n" + content
+        );
+      }
+      this.screen.render();
+    } catch (error) {
+      if (error instanceof TypeError && error.message.includes("undefined")) {
+        this.screen.destroy();
+        console.error("Default components are missing");
+        process.exit(1);
+      } else {
+        throw error;
+      }
     }
-    this.screen.render();
   }
 
   async appendModule(module: string) {
-    if (this.components.modules.content === "Loading...") {
-      this.components.modules.setContent(`- ${module} ✅`);
-    } else {
-      this.components.modules.setContent(
-        this.components.modules.content + "\n" + `- ${module} ✅`
-      );
+    try {
+      if (this.components.modules.content === "Loading...") {
+        this.components.modules.setContent(`- ${module} ✅`);
+      } else {
+        this.components.modules.setContent(
+          this.components.modules.content + "\n" + `- ${module} ✅`
+        );
+      }
+      this.screen.render();
+    } catch (error) {
+      if (error instanceof TypeError && error.message.includes("undefined")) {
+        this.screen.destroy();
+        console.error("Default components are missing");
+        process.exit(1);
+      } else {
+        throw error;
+      }
     }
-    this.screen.render();
   }
 }
 
