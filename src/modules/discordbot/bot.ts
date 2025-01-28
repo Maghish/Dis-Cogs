@@ -38,6 +38,7 @@ class Bot {
     });
 
     this.logger = new Log(workerData.modules);
+    this.client.logger = this.logger;
 
     // Command Handler
     this.client.commands = new Collection();
@@ -75,7 +76,7 @@ class Bot {
 
       this.logger.log(
         `Loaded ${this.client.commands.size} legacy commands`,
-        "loadingLog"
+        "bot_log"
       );
 
       const eventsPath = path.join(__dirname, "events.js");
@@ -105,20 +106,20 @@ class Bot {
           });
         }
       } catch (error) {
-        this.logger.log("Could not find events.ts file!", "errorLog");
+        this.logger.log("Could not find events.ts file!", "bot_error");
       }
 
       this.app.listen(this.port, async () => {
         this.logger.log(
           `Module Server ready & listening on port ${this.port}!`,
-          "moduleLog"
+          "general_log"
         );
       });
 
       await this.client.login(process.env.TOKEN);
     } catch (error: any) {
-      this.logger.log("Error logging in with the given token!", "errorLog");
-      this.logger.log(error.message, "errorLog");
+      this.logger.log("Error logging in with the given token!", "bot_error");
+      this.logger.log(error.message, "bot_error");
     }
   }
 }
