@@ -1,9 +1,6 @@
-import { exit } from "process";
 import { ModuleConfigType } from "./types";
 import { Worker } from "worker_threads";
 import path from "path";
-import blessed from "blessed";
-import { log } from "blessed-contrib";
 
 class Prime {
   public modules: ModuleConfigType[];
@@ -51,9 +48,16 @@ class Prime {
     this.modules.forEach(async (module) => {
       if (module.type === "THREAD") {
         const thread = await this.createThread(module.path, module.port);
-        this.TUI
-          ? this.TUI.appendContent("Thread created for module: " + module.path)
-          : console.log("Thread created for module:", module.path);
+
+        if (this.TUI) {
+          this.TUI.appendModule(module.name);
+          this.TUI.appendGeneralLog(
+            "Thread created for module: " + module.path
+          );
+        } else {
+          console.log("Thread created for module:", module.path);
+        }
+
         this.threads.push(thread);
       }
     });
