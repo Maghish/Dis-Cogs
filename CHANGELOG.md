@@ -1,8 +1,27 @@
 # dis-cogs
 
+## 0.3.0-beta.1
+
+### Minor Update
+
+- ## Feature Updates
+
+  - New infrastructure with `main.ts` as the prime module manager, now running and managing multiple modules
+  - Revamped `TUI` on `main.ts` to a detached/separated module `TUI`, that handles the TUI and its components
+    - Newly and fully updated TUI design than past versions
+    - Added `bot_cogs` component
+    - Added `general_log` component
+    - Added `module_logs` components
+    - Added `logo` component
+    - Added `bot_error` component
+    - Added `bot_log` component
+    - Added `modules` component
+  - Revamped the main bot files and code to a detached/separated module `mainbot`, that handles the main discord bot instance
+    - Modified `log` function logic to now contact the TUI module via fetch and also able to log on different new TUI components _(e.g. `bot_error`, `bot_log`, `bot_cogs`, `general_log`)_
+
 ## 0.2.1-beta.2
 
-### Patch Changes
+### Patch Update
 
 - ## Feature Updates
 
@@ -16,7 +35,7 @@
 
 ## 0.2.1-beta
 
-### Patch Changes
+### Patch Update
 
 - ## Feature Updates
 
@@ -27,7 +46,7 @@
 
 ## 0.2.0
 
-### Minor Changes
+### Minor Update
 
 - ## Feature Updates
 
@@ -46,7 +65,7 @@
 
 ## 0.1.1
 
-### Patch Changes
+### Patch Update
 
 - # v0.1.1
 
@@ -55,7 +74,7 @@
 
 ## 0.1.0
 
-### Minor Changes
+### Minor Update
 
 - # v0.1.0
 
@@ -66,7 +85,7 @@
 
 ## 0.0.1
 
-### Patch Changes
+### Patch Update
 
 - # v0.0.1 (Initial Update)
 
