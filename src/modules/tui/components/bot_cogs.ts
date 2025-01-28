@@ -1,14 +1,18 @@
 import { TUIComponentSchemaType } from "../types";
 
 export default {
-  name: "mainbot",
-  type: "log",
+  name: "bot_cogs",
+  type: "box",
   properties: {
-    top: "center",
-    left: "center",
-    width: "50%",
+    top: "50%",
+    left: 0,
+    width: "20%",
     height: "50%",
+    label: "Loaded Cogs (Discord Bot)",
+    content: "Loading...",
+    scrollable: true,
     style: {
+      border: { fg: "white" },
       fg: "white",
     },
     border: {

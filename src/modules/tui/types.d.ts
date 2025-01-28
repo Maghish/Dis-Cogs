@@ -1,5 +1,5 @@
 export interface TUIComponentSchemaType {
   name: string;
-  type: "log";
+  type: "log" | "box";
   properties: { [key: string]: any };
 }
