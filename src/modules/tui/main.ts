@@ -37,7 +37,7 @@ class TUI {
     this.loadComponents([
       botCogsBox,
       botErrorLog,
-      // botLog,
+      botLog,
       modulesBox,
       logoBox,
       generalLog,
