@@ -1,5 +1,11 @@
 # dis-cogs
 
+## 0.3.0-beta-2
+
+- ## Improvements
+
+  - Added some error handling on usage of default components on `tui/main.ts`
+
 ## 0.3.0-beta.1
 
 ### Minor Update
