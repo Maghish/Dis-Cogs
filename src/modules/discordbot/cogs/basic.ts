@@ -6,6 +6,8 @@ const cog = new Cog("basic");
 
 cog.addLegacy({
   name: "ping",
+  description: "Replies with Pong!",
+  usage: "",
   userPermissions: [],
   selfPermissions: [
     PermissionsBitField.Flags.ViewChannel,
