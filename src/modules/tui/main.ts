@@ -118,13 +118,7 @@ class TUI {
 
     this.app.post("/setcogs", (req, res) => {
       try {
-        if (this.components.bot_cogs.content === "Loading...") {
-          this.components.bot_cogs.setContent(req.body.content);
-        } else {
-          this.components.bot_cogs.setContent(
-            this.components.bot_cogs.content + "\n" + req.body.content
-          );
-        }
+        this.components.bot_cogs.setContent(req.body.content);
         this.screen.render();
         res.status(200).send();
       } catch (error) {
