@@ -20,7 +20,7 @@ cog.addEvent({
   async execute(client, modifiedClient: Client) {
     modifiedClient.logger.log(`Logged in as ${client.user.tag}!`, "bot_log");
     modifiedClient.logger.log(
-      modifiedClient.cogs.map((cog) => `- ${cog.name} ✅\n`).join(", "),
+      modifiedClient.cogs.map((cog) => `- ${cog.name} ✅`).join("\n"),
       "bot_cogs"
     );
   },
