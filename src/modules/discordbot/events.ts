@@ -5,7 +5,7 @@ import {
   LegacyCommand,
   SlashCommand,
   Client,
-} from "../../types";
+} from "./discord-bot-types";
 import buildEmbed from "./util/embed";
 
 const cog = new EventCog();

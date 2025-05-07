@@ -8,7 +8,7 @@ import {
 import dotenv from "dotenv";
 import path from "path";
 import fs from "fs";
-import * as TYPES from "../../types";
+import * as TYPES from "./discord-bot-types";
 import { Cog, EventCog } from "./cogs";
 import express from "express";
 import { workerData } from "worker_threads";

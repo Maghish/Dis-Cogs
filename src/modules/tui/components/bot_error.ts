@@ -1,4 +1,4 @@
-import { TUIComponentSchemaType } from "../types";
+import { TUIComponentSchemaType } from "../tui-types";
 
 export default {
   name: "bot_error",

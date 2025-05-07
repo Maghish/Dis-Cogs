@@ -1,4 +1,8 @@
-import { LegacyCommand, SlashCommand, EventFunction } from "../../types";
+import {
+  LegacyCommand,
+  SlashCommand,
+  EventFunction,
+} from "./discord-bot-types";
 
 export class Cog {
   name: string;

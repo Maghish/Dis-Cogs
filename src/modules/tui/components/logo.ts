@@ -1,5 +1,5 @@
 import figlet from "figlet";
-import { TUIComponentSchemaType } from "../types";
+import { TUIComponentSchemaType } from "../tui-types";
 import { version } from "../../../../package.json";
 
 export default {

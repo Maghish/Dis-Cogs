@@ -1,6 +1,6 @@
 import { PermissionsBitField, SlashCommandBuilder } from "discord.js";
 import { Cog } from "../cogs";
-import { LegacyCommand, SlashCommand } from "../../../types";
+import { LegacyCommand, SlashCommand } from "../discord-bot-types";
 
 const cog = new Cog("basic");
 
