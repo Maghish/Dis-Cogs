@@ -42,19 +42,7 @@ class TUI {
       logoBox,
       generalLog,
     ]);
-
-    // this.components = {
-    // mainbot: mainbot,
-    // };
-
-    // this.appendComponentsToScreen([mainbot]);
   }
-
-  // appendComponentsToScreen(component: any[]) {
-  //   component.forEach((component) => {
-  //     this.screen.append(component);
-  //   });
-  // }
 
   loadComponents(components: any[]) {
     components.forEach((comp) => {

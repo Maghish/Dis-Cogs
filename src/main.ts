@@ -144,7 +144,6 @@ class Prime {
             if (eventType !== "change" && eventType !== "rename") return;
 
             // Handle TypeScript files
-            // Handle TypeScript files
             if (isTypeScript && filename.endsWith(".ts")) {
               if (tsDebouncerTimer) {
                 clearTimeout(tsDebouncerTimer);
