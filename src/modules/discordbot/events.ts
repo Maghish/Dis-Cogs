@@ -133,7 +133,15 @@ cog.addEvent({
       }
     }
 
-    await command.execute(message, args);
+    try {
+      await command.execute(message, args);
+    } catch (error) {
+      await message.reply({
+        content:
+          "Unexpected error occurred while executing the command, please try again later",
+        ephemeral: true,
+      });
+    }
     return;
   },
 } as EventFunction);
