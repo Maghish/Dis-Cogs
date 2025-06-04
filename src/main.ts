@@ -334,6 +334,9 @@ class Prime {
       if (this.TUI) {
         this.TUI.appendGeneralLog("Error in worker: " + error.message);
       } else console.error("Error in worker:", error.message);
+
+      const moduleName = modulePath.split("./modules/")[1].split("/")[0];
+      this.restartWorker(moduleName);
     });
 
     return worker;
@@ -352,7 +355,7 @@ async function main() {
       type: "MAIN",
     },
     {
-      name: "mainbot",
+      name: "discordbot",
       path: "./modules/discordbot/bot.js",
       layer: 2,
       port: 3000,
