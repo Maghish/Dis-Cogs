@@ -10,10 +10,6 @@ export interface Client extends Discord.Client {
   logger: Log;
 }
 
-export interface Message extends Discord.Message {
-  client: Client;
-}
-
 export interface SlashCommand {
   name: string;
   data:
@@ -26,7 +22,8 @@ export interface SlashCommand {
   selfPermissions: Discord.PermissionsBitField.Flags[] | never[];
   userPermissions: Discord.PermissionsBitField.Flags[] | never[];
   execute(
-    interaction: Discord.CommandInteraction & { client: Client }
+    interaction: Discord.CommandInteraction,
+    modifiedClient: Client
   ): any | Promise<any>;
 }
 export interface LegacyCommand {
@@ -39,7 +36,11 @@ export interface LegacyCommand {
   dmOnly: "BOTH" | "GUILD_ONLY" | "DM_ONLY";
   selfPermissions: Discord.PermissionsBitField.Flags[] | never[];
   userPermissions: Discord.PermissionsBitField.Flags[] | never[];
-  execute(message: Message, args: string[]): any | Promise<any>;
+  execute(
+    message: Discord.Message,
+    args: string[],
+    modifiedClient: Client
+  ): any | Promise<any>;
 }
 
 export interface EventFunction {

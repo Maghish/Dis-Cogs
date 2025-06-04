@@ -41,8 +41,6 @@ cog.addEvent({
 
     const commandName = cmd.split(PREFIX)[1];
 
-    message.client = modifiedClient;
-
     let command: LegacyCommand = message.client.commands.get(commandName);
     if (!command) {
       message.client.commands.forEach((cmd: LegacyCommand) => {
@@ -134,7 +132,7 @@ cog.addEvent({
     }
 
     try {
-      await command.execute(message, args);
+      await command.execute(message, args, modifiedClient);
     } catch (error) {
       await message.reply({
         content:
@@ -156,8 +154,6 @@ cog.addEvent({
     const command: SlashCommand = interaction.client.slashCommands.get(
       interaction.commandName
     );
-
-    interaction.client = modifiedClient;
 
     if (command.ownerOnly && interaction.user.id !== modifiedClient.owner) {
       const embed = buildEmbed(
@@ -207,7 +203,7 @@ cog.addEvent({
     }
 
     try {
-      await command.execute(interaction);
+      await command.execute(interaction, modifiedClient);
     } catch (error) {
       if (interaction.replied || interaction.deferred) {
         await interaction.followUp({

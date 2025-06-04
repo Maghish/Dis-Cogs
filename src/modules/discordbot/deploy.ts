@@ -1,50 +1,24 @@
 import { REST, Routes } from "discord.js";
-import fs from "node:fs";
-import path from "path";
-import log from "./util/log";
-import { Cog } from "./cogs";
-import blessed from "blessed";
 import dotenv from "dotenv";
+import { Client, SlashCommand } from "./discord-bot-types";
 
 export class Deploy {
   private clientID: string;
   private token: string;
   private commands: any[];
-  private loadingLog: blessed.Widgets.Log | blessed.Widgets.BlessedElement;
-  private errorLog: blessed.Widgets.Log | blessed.Widgets.BlessedElement;
-  private loadedCog:
-    | blessed.Widgets.BoxElement
-    | blessed.Widgets.BlessedElement;
+  private client: Client;
 
-  constructor(
-    loadingLog: blessed.Widgets.Log | blessed.Widgets.BlessedElement,
-    errorLog: blessed.Widgets.Log | blessed.Widgets.BlessedElement,
-    loadedCog: blessed.Widgets.BoxElement | blessed.Widgets.BlessedElement
-  ) {
+  constructor(client: Client) {
     dotenv.config();
 
-    this.loadedCog = loadedCog;
-    this.errorLog = errorLog;
-    this.loadingLog = loadingLog;
-
+    this.client = client;
     this.clientID = process.env.CLIENTID!;
     this.token = process.env.TOKEN!;
     this.commands = [];
 
-    const cogsFolderPath = path.join(__dirname, "cogs");
-    const cogFiles = fs
-      .readdirSync(cogsFolderPath)
-      .filter((file) => file.endsWith(".js"));
-
-    for (const file of cogFiles) {
-      const filePath = path.join(cogsFolderPath, file);
-      const cog = require(filePath).default;
-      if (cog && cog instanceof Cog) {
-        cog.slashCommands.forEach((command) => {
-          this.commands.push(command.data.toJSON());
-        });
-      }
-    }
+    client.slashCommands.forEach((command: SlashCommand) => {
+      this.commands.push(command.data.toJSON());
+    });
   }
 
   public async registerCommands() {
@@ -57,16 +31,19 @@ export class Deploy {
             body: this.commands,
           }
         );
-        // log(`Reloaded ${data.length} slash commands`, this.loadingLog);
+        this.client.logger.log(
+          `Reloaded ${data.length} slash commands`,
+          "bot_log"
+        );
       } catch (error: any) {
-        // log(
-        // "Unexpected error occurred while registering slash commands.\n" +
-        // error.message,
-        // this.errorLog
-        // );
+        this.client.logger.log(
+          "Unexpected error occurred while registering slash commands.\n" +
+            error.message,
+          "bot_error"
+        );
       }
     } catch (error) {
-      //   log("Invalid token was provided!", this.errorLog);
+      this.client.logger.log("Invalid token was provided!", "bot_error");
     }
   }
 }

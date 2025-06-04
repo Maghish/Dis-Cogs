@@ -14,6 +14,7 @@ import express from "express";
 import { workerData } from "worker_threads";
 import Log from "./util/log";
 import cors from "cors";
+import { Deploy } from "./deploy";
 
 class Bot {
   private client: TYPES.Client;
@@ -115,6 +116,9 @@ class Bot {
           "general_log"
         );
       });
+
+      const deploy = new Deploy(this.client);
+      await deploy.registerCommands();
 
       await this.client.login(process.env.TOKEN);
     } catch (error: any) {
