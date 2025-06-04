@@ -41,6 +41,8 @@ cog.addEvent({
 
     const commandName = cmd.split(PREFIX)[1];
 
+    message.client = modifiedClient;
+
     let command: LegacyCommand = message.client.commands.get(commandName);
     if (!command) {
       message.client.commands.forEach((cmd: LegacyCommand) => {
@@ -146,6 +148,8 @@ cog.addEvent({
     const command: SlashCommand = interaction.client.slashCommands.get(
       interaction.commandName
     );
+
+    interaction.client = modifiedClient;
 
     if (command.ownerOnly && interaction.user.id !== modifiedClient.owner) {
       const embed = buildEmbed(

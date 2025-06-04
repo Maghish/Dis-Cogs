@@ -39,7 +39,7 @@ export interface LegacyCommand {
   dmOnly: "BOTH" | "GUILD_ONLY" | "DM_ONLY";
   selfPermissions: Discord.PermissionsBitField.Flags[] | never[];
   userPermissions: Discord.PermissionsBitField.Flags[] | never[];
-  execute(message: Discord.Message, args: string[]): any | Promise<any>;
+  execute(message: Message, args: string[]): any | Promise<any>;
 }
 
 export interface EventFunction {
