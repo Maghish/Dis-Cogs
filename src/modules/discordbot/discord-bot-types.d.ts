@@ -8,6 +8,7 @@ export interface Client extends Discord.Client {
   owner: string;
   cogs: Discord.Collection<string, Cog>;
   logger: Log;
+  loadedSlashCommands: Discord.Collection<string, string>;
 }
 
 export interface SlashCommand {

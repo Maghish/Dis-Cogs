@@ -1,4 +1,10 @@
-import { Events, GuildMember, PermissionsBitField } from "discord.js";
+import {
+  ApplicationCommand,
+  Collection,
+  Events,
+  GuildMember,
+  PermissionsBitField,
+} from "discord.js";
 import { EventCog } from "./cogs";
 import {
   EventFunction,
@@ -22,6 +28,12 @@ cog.addEvent({
     modifiedClient.logger.log(
       modifiedClient.cogs.map((cog) => `- ${cog.name} ✅`).join("\n"),
       "bot_cogs"
+    );
+
+    modifiedClient.loadedSlashCommands = new Collection();
+    const res = await modifiedClient.application?.commands.fetch();
+    res!.forEach((command: ApplicationCommand) =>
+      modifiedClient.loadedSlashCommands.set(command.name, command.id)
     );
   },
 } as EventFunction);
