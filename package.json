@@ -1,6 +1,6 @@
 {
   "name": "dis-cogs",
-  "version": "0.2.1-beta.2",
+  "version": "1.0.0",
   "description": "Discogs is a discord.js bot template that uses the idea of discord.py's Cogs feature and implements it on discord.js",
   "main": "dist/src/main.js",
   "scripts": {
@@ -25,9 +25,13 @@
     "typescript": "^5.6.3"
   },
   "dependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
     "blessed": "^0.1.81",
     "blessed-contrib": "^4.11.0",
+    "cors": "^2.8.5",
     "discord.js": "^14.16.3",
+    "express": "^4.21.2",
     "figlet": "^1.8.0",
     "ps-node": "^0.1.6"
   }

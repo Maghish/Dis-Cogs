@@ -1,8 +1,64 @@
-# dis-cogs
+# Changelog
+
+All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+## [1.0.0](https://github.com/Maghish/Dis-Cogs/compare/v0.2.1...v1.0.0) (2025-06-06)
+
+### Major Update
+
+- ## Feature Updates
+
+  - Added new TUI components for bot logs, errors, and cogs; renamed mainbot to general_log
+  - Added a new field to ModuleConfigType, new module type MAIN, and implemented MAIN type modules (TUI works now)
+  - Added hybrid commands ([#42](https://github.com/Maghish/Dis-Cogs/issues/42))
+  - Added timestamp field to embed built via buildEmbed function
+  - Discord bot restart on edit
+  - Enhanced TUI logging by appending module names and general logs for thread creation
+  - Import function removed
+  - Display bot version on bot status ([#35](https://github.com/Maghish/Dis-Cogs/issues/35))
+  - Modified TUI to better structure and detached components from main TUI file and created a handler instead
+  - Updated logging system to use specific log types for bot events and errors
+
+- ## Bug Fixes
+
+  - Added modifiedClient to message.client and interaction.client
+  - Added try-catch on messageCreate on command execution
+  - Bot cogs adding instead of replacing for every restart
+  - Fixed bot crash on error
+  - Fixed bot_cog component has unnecessary commas & renamed ping cog to basic cog
+  - Added a loadSlashCommands field on modified client & fill it via client ready event ([#24](https://github.com/Maghish/Dis-Cogs/issues/24))
+  - Removed unwanted commented code
+  - Resolved issue [#22](https://github.com/Maghish/Dis-Cogs/issues/22) [#33](https://github.com/Maghish/Dis-Cogs/issues/33) [#23](https://github.com/Maghish/Dis-Cogs/issues/23)
+  - Slash commands fixed
+
+## 0.3.0-beta-2
+
+- ## Improvements
+
+  - Added some error handling on usage of default components on `tui/main.ts`
+
+## 0.3.0-beta.1
+
+### Minor Update
+
+- ## Feature Updates
+
+  - New infrastructure with `main.ts` as the prime module manager, now running and managing multiple modules
+  - Revamped `TUI` on `main.ts` to a detached/separated module `TUI`, that handles the TUI and its components
+    - Newly and fully updated TUI design than past versions
+    - Added `bot_cogs` component
+    - Added `general_log` component
+    - Added `module_logs` components
+    - Added `logo` component
+    - Added `bot_error` component
+    - Added `bot_log` component
+    - Added `modules` component
+  - Revamped the main bot files and code to a detached/separated module `mainbot`, that handles the main discord bot instance
+    - Modified `log` function logic to now contact the TUI module via fetch and also able to log on different new TUI components _(e.g. `bot_error`, `bot_log`, `bot_cogs`, `general_log`)_
 
 ## 0.2.1-beta.2
 
-### Patch Changes
+### Patch Update
 
 - ## Feature Updates
 
@@ -16,7 +72,7 @@
 
 ## 0.2.1-beta
 
-### Patch Changes
+### Patch Update
 
 - ## Feature Updates
 
@@ -27,7 +83,7 @@
 
 ## 0.2.0
 
-### Minor Changes
+### Minor Update
 
 - ## Feature Updates
 
@@ -46,7 +102,7 @@
 
 ## 0.1.1
 
-### Patch Changes
+### Patch Update
 
 - # v0.1.1
 
@@ -55,7 +111,7 @@
 
 ## 0.1.0
 
-### Minor Changes
+### Minor Update
 
 - # v0.1.0
 
@@ -66,7 +122,7 @@
 
 ## 0.0.1
 
-### Patch Changes
+### Patch Update
 
 - # v0.0.1 (Initial Update)
 
