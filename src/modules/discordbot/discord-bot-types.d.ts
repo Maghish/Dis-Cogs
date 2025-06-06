@@ -3,12 +3,44 @@ import { Cog } from "./cogs";
 import Log from "./modules/discordbot/util/log";
 
 export interface Client extends Discord.Client {
-  commands: Discord.Collection<string, LegacyCommand>;
-  slashCommands: Discord.Collection<string, SlashCommand>;
+  commands: Discord.Collection<string, LegacyCommand | HybridCommand>;
+  slashCommands: Discord.Collection<string, SlashCommand | HybridCommand>;
   owner: string;
   cogs: Discord.Collection<string, Cog>;
   logger: Log;
   loadedSlashCommands: Discord.Collection<string, string>;
+}
+
+export interface HybridCommand {
+  name: string;
+  aliases?: string[];
+  description: string;
+  ownerOnly?: boolean;
+  usage: string;
+  dmOnly: "BOTH" | "GUILD_ONLY" | "DM_ONLY";
+  cog?: string;
+  data:
+    | Discord.SlashCommandBuilder
+    | Discord.SlashCommandSubcommandsOnlyBuilder
+    | Discord.SlashCommandSubcommandGroupBuilder
+    | Discord.SlashCommandUserPermissionsBuilder;
+  selfPermissions: Discord.PermissionsBitField.Flags[] | never[];
+  userPermissions: Discord.PermissionsBitField.Flags[] | never[];
+  execute({
+    baseClient,
+    modifiedClient,
+    guild,
+    args,
+    message,
+    interaction,
+  }: {
+    baseClient: Discord.Client;
+    modifiedClient: Client;
+    guild: Discord.Guild;
+    args?: string[];
+    message?: Discord.Message;
+    interaction?: Discord.CommandInteraction;
+  }): any | Promise<any>;
 }
 
 export interface SlashCommand {
@@ -22,6 +54,7 @@ export interface SlashCommand {
   ownerOnly?: boolean;
   selfPermissions: Discord.PermissionsBitField.Flags[] | never[];
   userPermissions: Discord.PermissionsBitField.Flags[] | never[];
+  cog?: string;
   execute(
     interaction: Discord.CommandInteraction,
     modifiedClient: Client

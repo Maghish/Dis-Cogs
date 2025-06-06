@@ -1,10 +1,9 @@
 import { PermissionsBitField, SlashCommandBuilder } from "discord.js";
 import { Cog } from "../cogs";
-import { LegacyCommand, SlashCommand } from "../discord-bot-types";
 
 const cog = new Cog("basic");
 
-cog.addLegacy({
+cog.addHybrid({
   name: "ping",
   description: "Replies with Pong!",
   usage: "",
@@ -14,24 +13,13 @@ cog.addLegacy({
     PermissionsBitField.Flags.SendMessages,
   ],
   dmOnly: "BOTH",
-  execute(message) {
-    message.reply(`Pong! ${message.client.ws.ping}ms`);
-  },
-} as LegacyCommand);
-
-cog.addSlash({
-  name: "ping",
-  userPermissions: [],
-  selfPermissions: [
-    PermissionsBitField.Flags.ViewChannel,
-    PermissionsBitField.Flags.SendMessages,
-  ],
   data: new SlashCommandBuilder()
     .setName("ping")
     .setDescription("Replies with Pong!"),
-  execute(interaction) {
-    interaction.reply(`Pong! ${interaction.client.ws.ping}ms`);
+  execute({ baseClient, interaction, message }) {
+    if (message) return message.reply(`Pong! ${baseClient.ws.ping}ms`);
+    else if (interaction) interaction.reply(`Pong! ${baseClient.ws.ping}ms`);
   },
-} as SlashCommand);
+});
 
 export default cog;

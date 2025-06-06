@@ -1,6 +1,6 @@
 import { REST, Routes } from "discord.js";
 import dotenv from "dotenv";
-import { Client, SlashCommand } from "./discord-bot-types";
+import { Client, HybridCommand, SlashCommand } from "./discord-bot-types";
 
 export class Deploy {
   private clientID: string;
@@ -16,7 +16,7 @@ export class Deploy {
     this.token = process.env.TOKEN!;
     this.commands = [];
 
-    client.slashCommands.forEach((command: SlashCommand) => {
+    client.slashCommands.forEach((command: SlashCommand | HybridCommand) => {
       this.commands.push(command.data.toJSON());
     });
   }

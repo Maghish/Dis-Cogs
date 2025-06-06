@@ -5,7 +5,7 @@ import {
   ClientEvents,
   Events,
 } from "discord.js";
-import dotenv from "dotenv";
+import dotenv, { config } from "dotenv";
 import path from "path";
 import fs from "fs";
 import * as TYPES from "./discord-bot-types";
@@ -70,6 +70,10 @@ class Bot {
           cog.slashCommands.forEach((command) =>
             this.client.slashCommands.set(command.name, command)
           );
+          cog.hybridCommands.forEach((command) => {
+            this.client.commands.set(command.name, command);
+            this.client.slashCommands.set(command.name, command);
+          });
         }
 
         continue;

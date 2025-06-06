@@ -12,6 +12,7 @@ import {
   LegacyCommand,
   SlashCommand,
   Client,
+  HybridCommand,
 } from "./discord-bot-types";
 import buildEmbed from "./util/embed";
 import { version } from "../../../package.json";
@@ -59,9 +60,10 @@ cog.addEvent({
 
     const commandName = cmd.split(PREFIX)[1];
 
-    let command: LegacyCommand = message.client.commands.get(commandName);
+    let command: LegacyCommand | HybridCommand =
+      message.client.commands.get(commandName);
     if (!command) {
-      message.client.commands.forEach((cmd: LegacyCommand) => {
+      message.client.commands.forEach((cmd: LegacyCommand | HybridCommand) => {
         if (cmd.aliases && cmd.aliases.includes(commandName)) {
           command = cmd;
         }
@@ -169,9 +171,8 @@ cog.addEvent({
   async execute(interaction: any, modifiedClient: Client) {
     if (!interaction.isChatInputCommand()) return;
 
-    const command: SlashCommand = interaction.client.slashCommands.get(
-      interaction.commandName
-    );
+    const command: SlashCommand | HybridCommand =
+      interaction.client.slashCommands.get(interaction.commandName);
 
     if (command.ownerOnly && interaction.user.id !== modifiedClient.owner) {
       const embed = buildEmbed(
