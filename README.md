@@ -1,8 +1,16 @@
-# Dis-Cogs
+![Dis-Cogs](imgs/DisCogsLogo.svg)
 
 > Current version: **v1.0.0**
 
 Discogs is a discord.js bot template that uses the idea of discord.py's Cogs feature and implements it on discord.js
+
+![GitHub License](https://img.shields.io/github/license/Maghish/Dis-Cogs)
+![GitHub commit activity](https://img.shields.io/github/commit-activity/t/Maghish/Dis-Cogs?label=total%20commits)
+![GitHub Created At](https://img.shields.io/github/created-at/Maghish/Dis-Cogs)
+![GitHub top language](https://img.shields.io/github/languages/top/Maghish/Dis-Cogs)
+![GitHub Issues or Pull Requests](https://img.shields.io/github/issues/Maghish/Dis-Cogs)
+![Node LTS](https://img.shields.io/node/v-lts/discord.js)
+![GitHub package.json prod dependency version](https://img.shields.io/github/package-json/dependency-version/Maghish/Dis-Cogs/discord.js)
 
 ## Requirements:
 
